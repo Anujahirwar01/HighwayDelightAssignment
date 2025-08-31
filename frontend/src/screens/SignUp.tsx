@@ -162,9 +162,9 @@ const SignUp: React.FC = () => {
       </div> */}
 
       {/* Main Content */}
-      <div className="flex-1 bg-white px-6 py-8">
+      <div className="flex-1 bg-white px-6 py-4">
         {/* Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-4">
           <div className="flex items-center justify-center mb-4">
             <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
               <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none">
@@ -182,21 +182,21 @@ const SignUp: React.FC = () => {
         <div className="space-y-4">
           {/* Error Message */}
           {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded">
               {error}
             </div>
           )}
 
           {/* Success Message */}
           {successMessage && (
-            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded">
               {successMessage}
             </div>
           )}
 
           {/* Name Field */}
           <div>
-            <label className="block text-sm text-gray-600 font-semibold mb-2">Your Name</label>
+            <label className="block text-sm text-gray-600 mr-58 font-semibold ">Your Name</label>
             <input
               type="text"
               name="name"
@@ -210,7 +210,7 @@ const SignUp: React.FC = () => {
 
           {/* Date of Birth Field */}
           <div>
-            <label className="block text-sm text-gray-600 font-semibold mb-2">Date of Birth</label>
+            <label className="block text-sm text-gray-600 mr-55 font-semibold ">Date of Birth</label>
             <div className="relative">
               <input
                 type="date"
@@ -225,7 +225,7 @@ const SignUp: React.FC = () => {
 
           {/* Email Field */}
           <div>
-            <label className="block text-sm text-gray-600 font-semibold mb-2">Email</label>
+            <label className="block text-sm text-gray-600 mr-67 font-semibold ">Email</label>
             <input
               type="email"
               name="email"
@@ -240,7 +240,7 @@ const SignUp: React.FC = () => {
           {/* OTP Field - Only show after Get OTP is clicked */}
           {showOTPField && (
             <div>
-              <label className="block text-sm text-gray-600 font-semibold mb-2">Enter OTP</label>
+              <label className="block text-sm text-gray-600 font-semibold ">Enter OTP</label>
               <input
                 type="text"
                 value={otp}
@@ -269,7 +269,7 @@ const SignUp: React.FC = () => {
           <button
             onClick={handleGetOTP}
             disabled={loading}
-            className="w-full bg-blue-500 text-white py-3 rounded-lg font-medium text-lg mt-6 hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-blue-500 text-white py-2 rounded-lg font-medium text-lg mt-4 hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'Sending OTP...' : 'Get OTP'}
           </button>
@@ -277,7 +277,7 @@ const SignUp: React.FC = () => {
           <button
             onClick={handleVerifyOTP}
             disabled={loading || otp.length !== 6}
-            className="w-full bg-green-500 text-white py-3 rounded-lg font-medium text-lg mt-6 hover:bg-green-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-green-500 text-white py-3 rounded-lg font-medium text-lg mt-2 hover:bg-green-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'Verifying...' : 'Verify OTP'}
           </button>

@@ -68,7 +68,7 @@ const SignIn: React.FC = () => {
         setSuccessMessage('Login successful! Redirecting to dashboard...');
         // Redirect to dashboard after successful login
         setTimeout(() => {
-          navigate('/');
+          navigate('/dashboard');
         }, 1500);
       }
     } catch (error) {
@@ -127,19 +127,19 @@ const SignIn: React.FC = () => {
 
           {/* Success Message */}
           {successMessage && (
-            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded">
               {successMessage}
             </div>
           )}
 
           {/* Email Input */}
           <div>
-            <label className="block text-sm text-gray-600 font-semibold mb-2">Email</label>
+            <label className="block text-sm text-gray-600 font-semibold mr-68">Email</label>
             <input
               type="email"
               value={email}
               onChange={handleEmailChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-gray-900"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-gray-900"
               placeholder="Enter your email"
               disabled={loading || showOTPField}
             />
@@ -148,13 +148,13 @@ const SignIn: React.FC = () => {
           {/* OTP Input Field - Show only after email is verified */}
           {showOTPField && (
             <div>
-              <label className="block text-sm text-gray-600 font-semibold mb-2">Enter OTP</label>
+              <label className="block text-sm text-gray-600 font-semibold ">Enter OTP</label>
               <input
                 type="text"
                 value={otp}
                 onChange={handleOTPChange}
                 maxLength={6}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-gray-900 text-center text-lg tracking-widest"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-gray-900 text-center text-lg tracking-widest"
                 placeholder="000000"
                 disabled={loading}
               />
@@ -166,7 +166,7 @@ const SignIn: React.FC = () => {
             <button
               onClick={handleGetOTP}
               disabled={loading || !email.trim()}
-              className="w-full bg-blue-500 text-white py-3 rounded-lg font-medium text-lg hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+              className="w-full bg-blue-500 text-white py-2 rounded-lg font-medium text-lg hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-4"
             >
               {loading ? 'Sending OTP...' : 'Get OTP'}
             </button>
@@ -175,7 +175,7 @@ const SignIn: React.FC = () => {
               <button
                 onClick={handleVerifyOTP}
                 disabled={loading || !otp.trim() || otp.length !== 6}
-                className="w-full bg-green-500 text-white py-3 rounded-lg font-medium text-lg hover:bg-green-600 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-green-500 text-white py-2 rounded-lg font-medium text-lg hover:bg-green-600 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Verifying...' : 'Verify & Sign In'}
               </button>
@@ -183,7 +183,7 @@ const SignIn: React.FC = () => {
               <button
                 onClick={handleResendOTP}
                 disabled={loading}
-                className="w-full bg-gray-500 text-white py-3 rounded-lg font-medium text-lg hover:bg-gray-600 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-gray-500 text-white py-2 rounded-lg font-medium text-lg hover:bg-gray-600 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Resending...' : 'Resend OTP'}
               </button>

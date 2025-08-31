@@ -33,7 +33,7 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       // Unauthorized - clear token and redirect to login
       localStorage.removeItem('authToken');
-      localStorage.removeItem('user');
+      localStorage.removeItem('userData');
       // You can add redirect logic here if needed
     }
     return Promise.reject(error);

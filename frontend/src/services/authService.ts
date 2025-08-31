@@ -99,7 +99,7 @@ class AuthService {
       // Store token and user data in localStorage
       if (response.data.success) {
         localStorage.setItem('authToken', response.data.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data.data.user));
+        localStorage.setItem('userData', JSON.stringify(response.data.data.user));
       }
       
       return response.data;
@@ -126,7 +126,7 @@ class AuthService {
       // Store token and user data in localStorage
       if (response.data.success) {
         localStorage.setItem('authToken', response.data.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data.data.user));
+        localStorage.setItem('userData', JSON.stringify(response.data.data.user));
       }
       
       return response.data;
@@ -148,12 +148,12 @@ class AuthService {
   // Logout user
   logout(): void {
     localStorage.removeItem('authToken');
-    localStorage.removeItem('user');
+    localStorage.removeItem('userData');
   }
 
   // Get current user from localStorage
   getCurrentUser(): User | null {
-    const userStr = localStorage.getItem('user');
+    const userStr = localStorage.getItem('userData');
     if (userStr) {
       try {
         return JSON.parse(userStr);
