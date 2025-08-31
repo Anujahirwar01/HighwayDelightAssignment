@@ -25,10 +25,21 @@ export default defineConfig({
             }
           },
           {
-            urlPattern: /^https:\/\/localhost:3000\/api\/.*/i,
+            urlPattern: /^https:\/\/highwaydelightassignment\.onrender\.com\/.*$/i,
             handler: 'NetworkFirst',
             options: {
               cacheName: 'api-cache',
+              expiration: {
+                maxEntries: 100,
+                maxAgeSeconds: 60 * 5 // 5 minutes
+              }
+            }
+          },
+          {
+            urlPattern: /^https:\/\/localhost:3000\/.*$/i,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'api-cache-dev',
               expiration: {
                 maxEntries: 100,
                 maxAgeSeconds: 60 * 5 // 5 minutes
