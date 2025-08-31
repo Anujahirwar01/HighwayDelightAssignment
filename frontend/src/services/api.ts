@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create axios instance with base configuration
 const api = axios.create({
-  baseURL: 'http://localhost:3000', // Backend server URL (matches your .env PORT=3000)
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000', // Use environment variable or fallback to localhost
   timeout: 10000, // 10 seconds timeout
   headers: {
     'Content-Type': 'application/json',
