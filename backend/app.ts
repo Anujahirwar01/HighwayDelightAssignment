@@ -5,6 +5,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import connectDB from "./db/db";
 import userRoutes from "./routes/user.routes";
+import notesRoutes from "./routes/notes.routes";
 
 const app: Application = express();
 connectDB();
@@ -26,5 +27,6 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/users", userRoutes);
+app.use("/notes", notesRoutes);
 
 export default app;

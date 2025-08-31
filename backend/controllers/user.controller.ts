@@ -6,7 +6,7 @@ import { sendOTPEmail } from '../services/user.service';
 const { validationResult } = require('express-validator');
 
 export const generateToken = (userId: string) => {
-  const payload = { userId };
+  const payload = { id: userId };
   const secret = process.env.JWT_SECRET || 'your_jwt_secret';
   const options = { expiresIn: '1h' as const };
   return jwt.sign(payload, secret, options);
@@ -30,21 +30,14 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
 
     const { email, name, age } = req.body;
 
-    // Check if user already exists
-    const existingUser = await userModel.findOne({ email });
-    if (existingUser) {
-      res.status(400).json({
-        success: false,
-        message: 'User already exists with this email'
-      });
-      return;
-    }
-
     // Generate OTP
     const otp = generateOTP();
     const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
-    // Create user
+    // Send OTP email (this will validate email and check if user exists)
+    await sendOTPEmail(email, otp, 'signup');
+
+    // Create user only after successful email validation
     const user = await userModel.create({
       email,
       name,
@@ -53,9 +46,6 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
       otpExpiry,
       isVerified: false
     });
-
-    // Send OTP email
-    await sendOTPEmail(email, otp);
 
     res.status(201).json({
       success: true,
@@ -68,6 +58,19 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
     });
   } catch (error) {
     console.error('Signup error:', error);
+    
+    // Handle specific validation errors from service layer
+    if (error instanceof Error) {
+      if (error.message.includes("Invalid email format") ||
+          error.message.includes("already exists")) {
+        res.status(400).json({
+          success: false,
+          message: error.message
+        });
+        return;
+      }
+    }
+    
     res.status(500).json({
       success: false,
       message: 'Error creating user'
@@ -148,47 +151,45 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
     const { email } = req.body;
 
-    // Check if user exists
-    const user = await userModel.findOne({ email });
-
-    if (!user) {
-      res.status(404).json({
-        success: false,
-        message: 'No account found with this email. Please sign up first.'
-      });
-      return;
-    }
-
-    if (!user.isVerified) {
-      res.status(400).json({
-        success: false,
-        message: 'Please verify your email first. Check your email for OTP.'
-      });
-      return;
-    }
-
     // Generate OTP for login
     const otp = generateOTP();
     const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
-    // Update user with OTP
-    user.otp = otp;
-    user.otpExpiry = otpExpiry;
-    await user.save();
+    // Send OTP email (this will validate email exists and is verified)
+    await sendOTPEmail(email, otp, 'login');
 
-    // Send OTP email
-    await sendOTPEmail(email, otp);
+    // Update user with OTP only after successful email validation
+    const user = await userModel.findOne({ email });
+    if (user) {
+      user.otp = otp;
+      user.otpExpiry = otpExpiry;
+      await user.save();
+    }
 
     res.status(200).json({
       success: true,
       message: 'OTP sent to your email successfully. Please verify to login.',
       data: {
-        email: user.email,
-        name: user.name
+        email: user?.email,
+        name: user?.name
       }
     });
   } catch (error) {
     console.error('Login error:', error);
+    
+    // Handle specific validation errors from service layer
+    if (error instanceof Error) {
+      if (error.message.includes("No account found") ||
+          error.message.includes("Invalid email format") ||
+          error.message.includes("verify your email first")) {
+        res.status(400).json({
+          success: false,
+          message: error.message
+        });
+        return;
+      }
+    }
+    
     res.status(500).json({
       success: false,
       message: 'Error sending login OTP'
@@ -292,7 +293,7 @@ export const resendOTP = async (req: Request, res: Response): Promise<void> => {
     await user.save();
 
     // Send OTP email
-    await sendOTPEmail(email, otp);
+    await sendOTPEmail(email, otp, 'resend');
 
     res.status(200).json({
       success: true,
